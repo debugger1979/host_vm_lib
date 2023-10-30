@@ -40,12 +40,14 @@ class HostVMAPI:
     
     def logout(self):
         """
-        Метод - Завершение сеанса HOSTVM.\n
+        Метод - Завершение сеанса HOSTVM.
+
         Вход:
-            Ничего\n
-        Выход:\n
-            0 - авторизация произошла успешно\n
-           -1 - ошибка аторизации\n
+            Ничего
+
+        Выход:
+            0 - операция выполенна успешно
+           -1 - операция выполнена с ошибками
             status_msg - сообщение о статусе выполнения метода
         """
 
@@ -63,15 +65,14 @@ class HostVMAPI:
     def get_list_supported_auths(self):
         """
         Метод - Вывод списка поддерживаемых аутентификаторов и их полей.
-        од - Авторизации в HOSTVM.\n
-        Вход:
-            rest_url - базовый URL rest-запроса.\n
-            parameters - словарь параметров авторизации.\n
         
-        Выход:\n
-            0 - авторизация произошла успешно\n
-           -1 - ошибка аторизации\n
-            status_msg - сообщение о статусе выполнения метода
+        Вход:
+            Ничего
+
+        Выход:
+            0 - операция выполенна успешно
+           -1 - операция выполнена с ошибками
+            status_msg - сообщение о статусе/результат выполнения метода
         """
         client = Http()
         self.list_supported_auth = []
@@ -117,13 +118,15 @@ class HostVMAPI:
         #         print("   - Name: {}, Type: {}, is Required?: {}".format(
         #             field['name'], field['gui']['type'], field['gui']['required']))
 
-    def auth_name2id(self, auth_name):
+    def auth_name_to_id(self, auth_name):
         """
-        Метод - Преобразование имени коннектора в его Id
+        Метод - Преобразование аутентификатора в его Id.
 
-        auth_name - имя коннектора
-
-        результат - Id коннектора
+        Вход:
+            auth_name - наименование аутентификатора
+        
+        Выход:
+            идентификатор аутентификатора
         """
         self.get_list_current_auth()
         for auth in self.list_current_auth:
@@ -131,13 +134,16 @@ class HostVMAPI:
                 return auth['id']
         return ''
     
-    def group_name2id(self, auth_name, group_name):
+    def group_name_to_id(self, auth_name, group_name):
         """
-        Метод - Преобразование имени группы в его Id
-
-        group_name - имя группы
-
-        результат - Id группы
+        Метод - Преобразование имени группы в его Id.
+        
+        Вход:
+            auth_name - наименование аутентификатора.\n
+            group_name - наименование группы.
+        
+        Выход:
+            идентификатор группы.            
         """
         self.get_list_current_groups(auth_name)
         for group in self.list_current_groups:
@@ -145,13 +151,15 @@ class HostVMAPI:
                 return group['id']
         return ''
 
-    def provider_name2id(self, provider_name):
+    def provider_name_to_id(self, provider_name):
         """
         Метод - Преобразование имени провайдера в его Id
 
-        provider_name - имя провайдера
+        Вход:
+            provider_name - имя провайдера
 
-        Результат - Id провайдера
+        Выход:
+            идентификатор провайдера
         """
         if self.get_list_current_providers() == 0 and (self.list_current_providers != []):
             for provider in self.list_current_providers:
@@ -159,15 +167,16 @@ class HostVMAPI:
                     return provider['id']
         return ''
 
-    def service_name2id(self, SP_name, svc_name):
+    def service_name_to_id(self, SP_name, svc_name):
         """
         Метод - Преобразование имени сервиса в его Id
 
-        SP_name - имя сервис-провайдера
-
-        svc_name - имя сервиса
-
-        Результат - Id сервиса
+        Вход:
+            SP_name - имя сервис-провайдера\n
+            svc_name - имя сервиса
+        
+        Выход:
+            идентификатор сервиса
         """
         self.get_list_services_in_SP(SP_name)
 
@@ -176,13 +185,15 @@ class HostVMAPI:
                 return service['id']
         return ''
 
-    def OSmanager_name2id(self, OSmanager_name):
+    def os_manager_name_to_id(self, OSmanager_name):
         """
         Метод - преобразование имени менеджера в его id
 
-        OSmanager_name - наименование менеджера ОС
+        Вход:
+            OSmanager_name - наименование менеджера ОС
 
-        Результат - id менеджера ОС
+        Выход:
+            Результат - id менеджера ОС
         """
         if self.get_list_OSmanagers() == 0:
             for group in self.status_msg:
@@ -190,9 +201,15 @@ class HostVMAPI:
                     return group['id']
         return ''
 
-    def transport_name2id(self, transport_name):
+    def transport_name_to_id(self, transport_name):
         """
         Метод - Преобразование наименование транспорта в его id
+
+        Вход:
+            transport_name - наименование транспорта
+
+        Выход:
+            идентификатор транспорта
         """
         if self.get_transport_list() == 0:
             for transport in self.status_msg:
@@ -200,9 +217,33 @@ class HostVMAPI:
                     return transport['id']
         return ""
 
+    def srvcpool_name_to_id(self, srvcpool_name):
+        """
+        Метод - Преобразование наименование сервис-пула в id
+
+        Вход:
+            srvcpool_name - наименование сервис-пула
+
+        Выход:
+            идентификатор группы
+        """
+        if self.get_servicepool_list() == 0:
+            for servicepool in self.status_msg:
+                if servicepool['name'] == srvcpool_name:
+                    return servicepool['id']
+        return ''
+
     def get_list_current_auth(self):
         """
         Метод вывода списка существующих коннекторов и их полей
+
+        Вход:
+            Ничего
+        
+        Выход:
+            0 - операция выполенна успешно
+           -1 - операция выполнена с ошибками
+            status_msg - описание статуса/результат выполнения операции
         """
         client = Http()
         self.list_current_auth = []
@@ -219,12 +260,16 @@ class HostVMAPI:
     
     def get_auth_info(self, auth_name):
         """
-        Метод - Получение информации о коннекторе
-        
-        auth_name - имя коннектора
+        Метод - Получение информации об аутентификаторе
+
+        Вход:
+            auth_name - наименование аутентификатора
+
+        Выход:
+            словарь, содержащий информацию об аутентификаторе
         """
         client = Http()
-        auth_id = self.auth_name2id(auth_name)
+        auth_id = self.auth_name_to_id(auth_name)
         response_data, content = client.request(
             self.rest_url + 'authenticators/' + auth_id, headers=self.headers)
         if response_data['status'] != '200':
@@ -238,9 +283,13 @@ class HostVMAPI:
         """
         Метод - Создание коннектора. 
 
-        data - структура данных, описывающая создаваемый коннектор.
+        Вход:
+            data - словарь, описывающий создаваемый аутентификатор.
         
-        Тип и поля можно взять из list_supported_auths_and_fields()
+        Выход:
+            0 - операция выполенна успешно
+           -1 - операция выполнена с ошибками
+            status_msg - описание статуса/результат 
         """
 
         client = Http()
@@ -259,15 +308,19 @@ class HostVMAPI:
 
     def delete_auth(self, auth_name):
         """
-        Метод - Удаление существующего коннектора
+        Метод - Удаление существующего аутентификатора.
 
-        auth_id - идентификатор коннектора. 
+        Вход:
+            auth_name - наименование аутентификатора. 
         
-        Можно получить из list_existing_auth()
+        Выход:
+            0 - операция выполенна успешно
+           -1 - операция выполнена с ошибками
+            status_msg - описание статуса/результат выполнения операции 
         """
         client = Http()
 
-        auth_id = self.auth_name2id(auth_name)
+        auth_id = self.auth_name_to_id(auth_name)
 
         response_data, content = client.request(
             self.rest_url + 'authenticators/{}'.format(auth_id), 'DELETE', headers=self.headers)
@@ -282,11 +335,16 @@ class HostVMAPI:
         """
         Метод - Получить список групп внутри коннектора.
 
-        auth_id - идентификатор коннектора. Можно получить из list_existing_auth()
+        Вход:
+            auth_id - идентификатор коннектора.
+        Выход:
+            0 - операция выполенна успешно
+           -1 - операция выполнена с ошибками
+            status_msg - описание статуса/результат выполнения операции
         """
         client = Http()
 
-        auth_id = self.auth_name2id(auth_name)
+        auth_id = self.auth_name_to_id(auth_name)
         response_data, content = client.request(
             self.rest_url + 'authenticators/{}/groups'.format(auth_id), 'GET', headers=self.headers)
         if response_data['status'] != '200':
@@ -299,15 +357,19 @@ class HostVMAPI:
 
     def create_internal_group(self, auth_name, data):
         """
-        Сздание группы внутри коннектора.
+        Метод - Сздание группы внутри коннектора.
 
-        auth_name - имя коннектора
-        data - структура данных, описывающая создаваемую группу
-
+        Вход:
+            auth_name - имя коннектора
+            data - структура данных, описывающая создаваемую группу
+        Выход:
+            0 - операция выполенна успешно
+           -1 - операция выполнена с ошибками
+            status_msg - описание статуса/результат выполнения операции
         """
         client = Http()
 
-        auth_id = self.auth_name2id(auth_name)
+        auth_id = self.auth_name_to_id(auth_name)
         response_data, content = client.request(self.rest_url + 'authenticators/{}/groups'.format(
             auth_id), 'PUT', headers=self.headers, body=json.dumps(data))
         if response_data['status'] != '200':
@@ -321,6 +383,12 @@ class HostVMAPI:
     def get_config_info(self):
         """
         Метод - Запрос информации о конфигурации приложения
+
+        Вход:
+            Ничего
+
+        Выход:
+            словарь, содержащий параметры конфигурации приложения
         """
         client = Http()
 
@@ -343,6 +411,14 @@ class HostVMAPI:
     def set_superuser_pass(self, newPassword: str):
         """
         Метод - Установка пароля суперпользователе
+
+        Вход:
+            newPassword - новый пароль суперпользователя приложения
+
+        Выход:
+            0 - операция выполенна успешно
+           -1 - операция выполнена с ошибками
+            status_msg - описание статуса/результат выполнения операции
         """
         client = Http()
         # Запрос списка параметров конфигурации приложения
@@ -365,6 +441,14 @@ class HostVMAPI:
     def get_list_supported_providers(self):
         """
         Метод - Получить список поддерживаемых сервис-провайдеров
+
+        Вход:
+            Ничего
+
+        Выход:
+            0 - операция выполенна успешно
+           -1 - операция выполнена с ошибками
+            status_msg - описание статуса/результат выполнения операции
         """
         client = Http()
 
@@ -385,6 +469,14 @@ class HostVMAPI:
     def get_list_current_providers(self):
         """
         Метод - Получить список текущих сервис-провайдеров
+
+        Вход:
+            Ничего
+
+        Выход:
+            0 - операция выполенна успешно
+           -1 - операция выполнена с ошибками
+            status_msg - описание статуса/результат выполнения операции
         """
         client = Http()
 
@@ -395,27 +487,42 @@ class HostVMAPI:
 
         r = json.loads(content)
     
-        self.list_current_providers = r 
+        self.status_msg = r 
         return 0
 
     def get_info_provider(self, SP_name):
         """
-        Метод - Запрос информации о параметрах сервис-провайдера по ID
+        Метод - Запрос информации о параметрах сервис-провайдера по наименованию
+
+        Вход:
+            SP_name - наименование сервис-провайдера
+
+        Выход:
+            0 - операция выполенна успешно
+           -1 - операция выполнена с ошибками
+            status_msg - описание статуса/результат выполнения операции
         """
         client = Http()
-        SP_id = self.provider_name2id(SP_name)
+        SP_id = self.provider_name_to_id(SP_name)
         response_data, content = client.request(self.rest_url + 'providers/' + SP_id, headers=self.headers)
         if response_data['status'] != '200':
             self.status_msg = "Error in request: \n-------------------\n{}\n{}\n----------------".format(response_data, content)
-            return {}
+            return -1
 
-        r = json.loads(content)
-                
-        return r 
+        self.status_msg = json.loads(content)
+        return 0
     
     def create_provider(self, data):
         """
         Метод - Создание сервис-провайдера
+
+        Вход:
+            data - словарь, описывающий параметры создаваемого сервис-провайдера
+
+        Выход:
+            0 - операция выполенна успешно
+           -1 - операция выполнена с ошибками
+            status_msg - описание статуса/результат выполнения операции
         """
         client = Http()
 
@@ -424,32 +531,49 @@ class HostVMAPI:
         if response_data['status'] != '200':
             self.status_msg = "Error in request: \n-------------------\n{}\n{}\n----------------".format(response_data, content)
             return -1
+        
         self.status_msg = json.loads(content)
-        self.get_list_current_providers()
-
         return 0
 
     def get_list_services_in_SP(self, SP_name):
         """
-        Метод - Список сервисов внутри сервис-провайдера
+        Метод - Получить список сервисов внутри сервис-провайдера
+
+        Вход:
+            SP_name - наименование сервис-провайдера
+
+        Выход:
+            0 - операция выполенна успешно
+           -1 - операция выполнена с ошибками
+            status_msg - описание статуса/результат выполнения операции
         """
+
         client = Http()
-        SP_id = self.provider_name2id(SP_name)
+        SP_id = self.provider_name_to_id(SP_name)
         response_data, content = client.request(
             self.rest_url + 'providers/' + SP_id + '/services', headers=self.headers)
         if response_data['status'] != '200':
             self.status_msg = "Error in request: \n-------------------\n{}\n{}\n----------------".format(response_data, content)
             return -1
         
-        self.list_services_in_SP = json.loads(content)
+        self.status_msg = json.loads(content)
         return 0
        
     def create_service_in_provider(self, SP_name, data):
         """
         Метод - Создание сервиса в сервис-провайдере
+
+        Вход:
+            SP_name - наименование сервис-провайдера
+            data - словарь, описывающий параметры создаваемого сервиса
+
+        Выход:
+            0 - операция выполенна успешно
+           -1 - операция выполнена с ошибками
+            status_msg - описание статуса/результат выполнения операции
         """
         client = Http()
-        SP_id = self.provider_name2id(SP_name)
+        SP_id = self.provider_name_to_id(SP_name)
 
         response_data, content = client.request(self.rest_url + 'providers/' + SP_id +
                                 '/services', 'PUT', headers=self.headers, body=json.dumps(data))
@@ -462,35 +586,44 @@ class HostVMAPI:
 
     def get_service_info_in_SP(self, SP_name, svc_name):
         """
-        Метод - Получить информацию о конкретном сервисе конкретного провайдера
+        Метод - Получить информацию о конкретном сервисе конкретного сервис-провайдера
+    
+        Вход:
+            SP_name - наименование сервис-провайдера\n
+            svc_name - наименование сервиса
 
-        SP_name - имя сервис провайдера
-
-        svc_name - имя сервиса
-
-        Результат - информация о сервисе
+        Выход:
+            0 - операция выполенна успешно
+           -1 - операция выполнена с ошибками
+            status_msg - описание статуса/результат выполнения операции
         """
         client = Http()
 
-        SP_id = self.provider_name2id(SP_name)
-        svc_id = self.service_name2id(SP_name, svc_name)
+        SP_id = self.provider_name_to_id(SP_name)
+        svc_id = self.service_name_to_id(SP_name, svc_name)
 
         response_data, content = client.request(
             self.rest_url + 'providers/' + SP_id + '/services/' + svc_id, headers=self.headers)
         if response_data['status'] != '200':
             self.status_msg = "Error in request: \n-------------------\n{}\n{}\n----------------".format(response_data, content)
             return {}
-        r = json.loads(content)
 
-        return r
+        self.status_msg = json.loads(content)
+        return 0
     
-    def get_transport_list(self, typeBool=False):
+    def get_transport_list(self, typeBool:bool=False):
         """
-        Метод - Получить список транспортов
+        Метод - Получить список транспортов.
 
-        True - Получить список всех поддерживаемых трансопортов
+        Вход:
+            typeBool - тип запрашиваемой информации
+                -True - список всех поддерживаемых транспортов\n
+                -False|Ничего - список существующих транспортов
 
-        False|Ничего - Получить список существующих транспортов
+        Выход:
+            0 - операция выполенна успешно
+           -1 - операция выполнена с ошибками
+            status_msg - описание статуса/результат выполнения операции
         """
         result = []
         client = Http()
@@ -504,19 +637,19 @@ class HostVMAPI:
             self.status_msg = "Error in request: \n-------------------\n{}\n{}\n----------------".format(response_data, content)
             return -1
 
-        r = json.loads(content)
+        response_content = json.loads(content)
 
         if not typeBool:
-            for item_r in r:
+            for item_rc in response_content:
                 client = Http()
                 response_data, content = client.request(
-                    self.rest_url + 'transports/' + item_r['id'], headers=self.headers)
+                    self.rest_url + 'transports/' + item_rc['id'], headers=self.headers)
                 if response_data['status'] != '200':
                     self.status_msg = "Error in request: \n-------------------\n{}\n{}\n----------------".format(response_data, content)
                     return -1
                 result.append(json.loads(content))
         else:
-            result = r
+            result = response_content
 
         # Тому, кто придумал хранить иконки в структруре данных, надо забить гвоздь в голову
         if typeBool:
@@ -529,7 +662,13 @@ class HostVMAPI:
         """
         Метод - Создание транспорта
 
-        data - структура данных необходимая для создания транспорта
+        Вход:
+            data - словарь параметров создаваемого транспорта
+
+        Выход:
+            0 - операция выполенна успешно
+           -1 - операция выполнена с ошибками
+            status_msg - описание статуса/результат выполнения операции
         """
         client = Http()
 
@@ -545,10 +684,15 @@ class HostVMAPI:
         """
         Метод - Получить список менеджеров ОС
 
-        True - Список типов поддерживаемых менеджеров ОС
+        Вход:
+            typeBool - тип запрашиваемой информации
+                -True - список всех поддерживаемых менеджеров ОС\n
+                -False|Ничего - список существующих менеджеров ОС
 
-        False|Ничего - Список существующих менеджеров ОС
-
+        Выход:
+            0 - операция выполенна успешно
+           -1 - операция выполнена с ошибками
+            status_msg - описание статуса/результат выполнения операции
         """
         client = Http()
         result = []
@@ -561,31 +705,39 @@ class HostVMAPI:
         if response_data['status'] != '200':
             self.status_msg = "Error in request: \n-------------------\n{}\n{}\n----------------".format(response_data, content)
             return -1
-        r = json.loads(content)
+        response_content = json.loads(content)
 
         if not typeBool:
-            for item_r in r:
+            for item_rc in response_content:
                 client = Http()
                 response_data, content = client.request(
-                    self.rest_url + 'osmanagers/' + item_r['id'], headers=self.headers)
+                    self.rest_url + 'osmanagers/' + item_rc['id'], headers=self.headers)
                 if response_data['status'] != '200':
                     self.status_msg = "Error in request: \n-------------------\n{}\n{}\n----------------".format(response_data, content)
                     return -1
-                result.append(content)
+                result.append(json.loads(content))
+        else:
+            result = response_content
 
         # Кто додумался до хранения иконок внутри структур данных???
         if typeBool:
-            for osmanager_item in r:
+            for osmanager_item in result:
                 del osmanager_item['icon']
-
-        self.status_msg = r
+            
+        self.status_msg = result
         return 0
     
     def create_osmanager(self, data):
         """
         Метод - Создание менеджера ОС
 
-        data - структура данных описывающая создаваемый менеджер ОС
+        Вход:
+            data - словарь параметров создаваемого менеджера ОС
+
+        Выход:
+            0 - операция выполенна успешно
+           -1 - операция выполнена с ошибками
+            status_msg - описание статуса/результат выполнения операции
         """
         client = Http()
 
@@ -599,6 +751,14 @@ class HostVMAPI:
     def get_servicepool_list(self):
         """
         Метод - Получить список существующих сервис-пулов
+
+        Вход:
+            Ничего
+
+        Выход:
+            0 - операция выполенна успешно
+           -1 - операция выполнена с ошибками
+            status_msg - описание статуса/результат выполнения операции
         """
         client = Http()
 
@@ -615,7 +775,13 @@ class HostVMAPI:
         """
         Метод - Создание сервис-пула
 
-        data - структура данных, описывающая создаваемый сервис-пул
+        Вход:
+            data - словарь параметров создаваемого сервис-пула
+
+        Выход:
+            0 - операция выполенна успешно
+           -1 - операция выполнена с ошибками
+            status_msg - описание статуса/результат выполнения операции
         """
         client = Http()
 
@@ -626,23 +792,21 @@ class HostVMAPI:
         self.status_msg = json.loads(content)
         return 0
 
-    def srvcpool_name2id(self, srvcpool_name):
-        """
-        Метод - Преобразование наименование сервис-пула в id
-        """
-        if self.get_servicepool_list() == 0:
-            for servicepool in self.status_msg:
-                if servicepool['name'] == srvcpool_name:
-                    return servicepool['id']
-        return ''
-
     def get_list_group_in_servicepool(self, svcpool_name):
         """
         Метод - Получить список групп доступа в сервис-пуле
+
+        Вход:
+            svcpool_name - наименование сервис-пула
+
+        Выход:
+            0 - операция выполенна успешно
+           -1 - операция выполнена с ошибками
+            status_msg - описание статуса/результат выполнения операции
         """
         client = Http()
 
-        svcpool_id = self.srvcpool_name2id(svcpool_name)
+        svcpool_id = self.srvcpool_name_to_id(svcpool_name)
         response_data, content = client.request(
             self.rest_url + 'servicespools/' + svcpool_id + '/groups', headers=self.headers)
         if response_data['status'] != '200':
@@ -654,14 +818,19 @@ class HostVMAPI:
     def add_group_to_servicepool(self, svcpool_name, data):
         """
         Метод - Добавить группу доступа в сервис-пул
-        
-        SP_id - id скрвис-пула
-        
-        data: структура данных JSON - id группы доступа
+
+        Вход:
+            svcpool_name - наименование сервис-пула
+            data - словарь параметров добавляемой группы
+
+        Выход:
+            0 - операция выполенна успешно
+           -1 - операция выполнена с ошибками
+            status_msg - описание статуса/результат выполнения операции
         """
         client = Http()
 
-        svcpool_id = self.srvcpool_name2id(svcpool_name)
+        svcpool_id = self.srvcpool_name_to_id(svcpool_name)
         response_data, content = client.request(self.rest_url + 'servicespools/' + svcpool_id + '/groups', 'PUT', headers=self.headers, body=json.dumps(data))
         if response_data['status'] != '200':
             self.status_msg = "Error in request: \n-------------------\n{}\n{}\n----------------".format(response_data, content)
@@ -673,10 +842,15 @@ class HostVMAPI:
         """
         Метод - Получить список транспортов добавлденных в сервис-пул
 
-        svcpool_name - наименование сервис-пула
+        Вход:
+            svcpool_name - наименование сервис-пула
+        Выход:
+            0 - операция выполенна успешно
+           -1 - операция выполнена с ошибками
+            status_msg - описание статуса/результат выполнения операции
         """
         client = Http()
-        svcpool_id = self.srvcpool_name2id(svcpool_name)
+        svcpool_id = self.srvcpool_name_to_id(svcpool_name)
         response_data, content = client.request(
             self.rest_url + 'servicespools/' + svcpool_id + '/transports', headers=self.headers)
         if response_data['status'] != '200':
@@ -689,14 +863,19 @@ class HostVMAPI:
     def add_transport_to_servicepool(self, svcpool_name, data):
         """
         Метод - Добавить группу доступа в сервис-пул
-        
-        svcpool_name: наименование скрвис-пула
 
-        data: структура данных, описывающих добавляемый транспорт
+        Вход:
+            svcpool_name - наименование сервис-пула
+            data - словарь параметров добавляемого транспорта
+
+        Выход:
+            0 - операция выполенна успешно
+           -1 - операция выполнена с ошибками
+            status_msg - описание статуса/результат выполнения операции
         """
         client = Http()
 
-        svcpool_id = self.srvcpool_name2id(svcpool_name)
+        svcpool_id = self.srvcpool_name_to_id(svcpool_name)
         response_data, content = client.request(self.rest_url + 'servicespools/' + svcpool_id + '/transports', 'PUT', headers=self.headers, body=json.dumps(data))
         if response_data['status'] != '200':
             self.status_msg = "Error in request: \n-------------------\n{}\n{}\n----------------".format(response_data, content)

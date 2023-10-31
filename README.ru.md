@@ -1,4 +1,4 @@
-[![en](https://img.shields.io/badge/lang-en-blue.svg)](https://github.com/debugger1979/host_vm_lib/README.md)
+[![en](https://img.shields.io/badge/lang-en-blue.svg)](https://github.com/debugger1979/host_vm_lib/tree/main/README.md)
 
 # Библиотека для работы с API HOSTVM VDI (OpenUDS)
 ## Предназначена для автоматизации процесса конфигурирования параметров платформы виртуализации HOSTVM

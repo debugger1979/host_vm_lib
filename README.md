@@ -1,44 +1,46 @@
-# Библиотека для работы с API HOSTVM VDI (OpenUDS)
-## Предназначена для автоматизации процесса конфигурирования параметров платформы виртуализации HOSTVM
+[![ru](https://img.shields.io/badge/lang-ru-red.svg)](https://github.com/debugger1979/host_vm_lib/README.ru.md)
 
-С помощью данной библиотеки можно выполнить следующие операции:
-- Работа с конфигурацией самого приложения HOSTVM VDI (изменение параметров)
-- Администрирвание учетных записей (смена пароля суперпользователя)
-- Работа с аутентификаторами (создание, чтение, изменение, удаление)
-- Работа с группами доступа, внутри аутентификатора (создание, чтение, изменение, удаление)
-- Работа с сервис-провайдерами, сервисами (создание, чтение, изменение, удаление)
-- Работа с транспортами (создание, чтение, изменение, удаление)
-- Работа с менеджерами ОС (создание, чтение, изменение, удаление)
-- Работа с пулами сервисов (создание, чтение, изменение, удаление, привязка групп доступа, транспортов, менеджеров ОС, провайдеров)
+# The library for working with the HOSTVM VDI API (OpenUDS)
+## Is designed to automate the process of configuring the parameters of the HOSTVM virtualization platform
 
-**Примеры работы с библиотекой:**
+Using this library, you can perform the following operations:
+- Working with the configuration of the HOSTVM VDI application itself (changing parameters)
+- Account administration (changing the superuser password)
+- Work with authenticators (creation, reading, modification, deletion)
+- Working with access groups, inside the authenticator (creation, reading, modification, deletion)
+- Work with service providers, services (creation, reading, modification, deletion)
+- Working with transports (creating, reading, modifying, deleting)
+- Work with OS managers (create, read, modify, delete)
+- Work with service pools (creation, reading, modification, deletion, binding of access groups, transports, OS managers, providers)
 
-_Примечание:_
- 1. _Для создания объектов (аутентификаторы, группы, сервис-провайдеры и т.д.) необходимы определенные параметры, оформленные в формате словаря. Рекомендация - изначально создать "руками" эти в объекты в самом приложении, а потом прочитать с помощью методов данной библиотеки. Далее полученные структуры использовать в своих скриптах. Позднее будут выложены шаблоны параметров._
- 2. _В библиотеке реализована возможность обращения к объектам по их наименованию (как указано в самом приложении), а не по id_
- 3. _**Важно!** Для изменения параметров в приложении необходима учетная запись суперпользователя._
+**Examples of working with the library:**
 
-- Авторизация в приложении. Данная операция необходима только один раз на весь сеанс работы с приложением.  
+_Note:_
+1. _ To create objects (authenticators, groups, service providers, etc.), certain parameters are required, formatted in a dictionary format. The recommendation is to initially create these objects "by hand" in the application itself, and then read them using the methods of this library. Then use the resulting structures in your scripts. The parameter templates will be posted later._
+2. _ The library has the ability to access objects by their name (as indicated in the application itself), and not by id_
+3. _**Important!** A superuser account is required to change the settings in the application._
+
+- Authorization in the application. This operation is required only once for the entire session of working with the application.
 
 ```
 from host_vm_lib import HostVMAPI
 
-# Базовый адрес для доступа к методам приложения
+# The base address for accessing application methods
 rest_url = 'http://URL-HOSTVM/rest/'
-# Строка для авторизации в приложении
+# The line for authorization in the application
 parameters = '{"auth": "admin", "username": "user", "password": "password"}'
 
 hostvm = HostVMAPI()
 
 if hostvm.login(rest_url=rest_url, parameters=parameters) == 0:
-    # Авторизация в приложении прошла успешно
-    # ... (выполнение необходимых манипуляций с приложениеме)
+    # Authorization in the application was successful
+    # ... (performing the necessary manipulations with applications)
 else:
     # Возникли проблемы при авторизации. Сообщение об ошибке можно получить в свойстве класса - status_msg
     print(hostvm.status_msg)
 ```
 
-- Создание сервис-провайдера. Используется словарь, содержащий параметры создаваемого сервис-провайдера 
+- Creating a service provider. A dictionary containing the parameters of the service provider being created is used.
 
 ```
     data = {
@@ -47,7 +49,7 @@ else:
         "tags": [],
         "comments": "",
         "type": "openNebulaPlatform",
-        "host": "XXX.YYY.ZZZ.NNN",
+        "host": "the host name of the virtualization server",
         "port": "2633",
         "ssl": False,
         "username": "user",

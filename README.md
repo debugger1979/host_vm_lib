@@ -13,7 +13,7 @@ Using this library, you can perform the following operations:
 - Work with OS managers (create, read, modify, delete)
 - Work with service pools (creation, reading, modification, deletion, binding of access groups, transports, OS managers, providers)
 
-**Examples of working with the library:**
+## Examples of working with the library:
 
 _Note:_
 1. _ To create objects (authenticators, groups, service providers, etc.), certain parameters are required, formatted in a dictionary format. The recommendation is to initially create these objects "by hand" in the application itself, and then read them using the methods of this library. Then use the resulting structures in your scripts. The parameter templates will be posted later._
@@ -60,4 +60,4 @@ else:
         }
     hostvm.create_provider(data)
     print(hostvm.status_msg)
-```# host_vm_lib
+```

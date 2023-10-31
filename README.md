@@ -36,7 +36,7 @@ if hostvm.login(rest_url=rest_url, parameters=parameters) == 0:
     # Authorization in the application was successful
     # ... (performing the necessary manipulations with applications)
 else:
-    # Возникли проблемы при авторизации. Сообщение об ошибке можно получить в свойстве класса - status_msg
+    # There were problems with authorization. The error message can be obtained in the class property - hostvm.status_msg
     print(hostvm.status_msg)
 ```
 

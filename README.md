@@ -1,4 +1,4 @@
-[![ru](https://img.shields.io/badge/lang-ru-red.svg)](https://github.com/debugger1979/host_vm_lib/README.ru.md)
+[![ru](https://img.shields.io/badge/lang-ru-red.svg)](https://github.com/debugger1979/host_vm_lib/tree/main/README.ru.md)
 
 # The library for working with the HOSTVM VDI API (OpenUDS)
 ## Is designed to automate the process of configuring the parameters of the HOSTVM virtualization platform

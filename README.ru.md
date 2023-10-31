@@ -49,7 +49,7 @@ else:
         "tags": [],
         "comments": "",
         "type": "openNebulaPlatform",
-        "host": "XXX.YYY.ZZZ.NNN",
+        "host": "имя хоста сервера виртуализации",
         "port": "2633",
         "ssl": False,
         "username": "user",

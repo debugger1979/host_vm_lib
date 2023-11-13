@@ -16,8 +16,8 @@ Using this library, you can perform the following operations:
 ## Examples of working with the library:
 
 _Note:_
-1. _ To create objects (authenticators, groups, service providers, etc.), certain parameters are required, formatted in a dictionary format. The recommendation is to initially create these objects "by hand" in the application itself, and then read them using the methods of this library. Then use the resulting structures in your scripts. The parameter templates will be posted later._
-2. _ The library has the ability to access objects by their name (as indicated in the application itself), and not by id_
+1. _To create objects (authenticators, groups, service providers, etc.), certain parameters are required, formatted in a dictionary format. The recommendation is to initially create these objects "by hand" in the application itself, and then read them using the methods of this library. Then use the resulting structures in your scripts. The parameter templates will be posted later._
+2. _The library has the ability to access objects by their name (as indicated in the application itself), and not by id_
 3. _**Important!** A superuser account is required to change the settings in the application._
 
 - Authorization in the application. This operation is required only once for the entire session of working with the application.
